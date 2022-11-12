@@ -5,11 +5,25 @@
 using namespace std;
 
 int Komnata, Trodnosc, loch;
-int Atak, Obrona, SC, Obrazenia, Szczescie, Zycie;
 int ZycieWroga, AtakWroga, ObronaWroga, WrogaRasa, WrogaKlasa;
 float ZycieMnoznik, AtakMnoznik, ObronaMnoznik;
 int Rasa, Klasa, Rany, Mana;
 int k, T;
+
+struct Gracz
+{
+    int Atak;
+    int Obrona;
+    int Obrazenia;
+    int Szczescie;
+    int Zycie;
+};
+
+
+
+
+
+
 
 bool CzyKoniecGry() {
     if (Zycie - Rany <= 0) {
@@ -265,7 +279,7 @@ void Nagroda() {
 
 int main() {
     srand(time(NULL));
-
+    Gracz Gracz1;
     TworzeniePostaci();
     for (int runda = 1; runda < 30; runda++) {
         cout << "Runda " << runda << endl;
