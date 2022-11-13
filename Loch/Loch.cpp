@@ -40,10 +40,7 @@ bool CzyPokonalesWroga() {
 }
 
 
-void PoziomTrudnosci() {
-    cout << "Wybierz poziom trudnosci(1, 2, 3, 4 lub 5): ";
-    cin >> k;
-
+int PoziomTrudnosciMech() {
     if (k < 6 && k>0)
     {
         switch (k) {
@@ -56,10 +53,18 @@ void PoziomTrudnosci() {
     }
     else
     {
-        cout << "blond" << endl;
         PoziomTrudnosci();
     }
 
+}
+void PoziomTrudnosciCom() {
+    cout << "Wybierz poziom trudnosci(1, 2, 3, 4 lub 5): ";
+    cin >> k;
+}
+void PoziomTrudnosci() {
+
+    PoziomTrudnosciComumikacja()
+        PoziomTrudnosciMechanika()
 }
 void WybieranieRasy() {
     cout << "Wybierz rasę! " << endl << endl;
