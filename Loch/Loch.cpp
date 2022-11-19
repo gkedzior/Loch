@@ -7,7 +7,7 @@ using namespace std;
 int Komnata, Trodnosc, loch;
 int ZycieWroga, AtakWroga, ObronaWroga, WrogaRasa, WrogaKlasa;
 float ZycieMnoznik, AtakMnoznik, ObronaMnoznik;
-int Rasa, Klasa, Mana;
+int Rasa, Klasa;
 int k, T;
 void WybieranieRasy();
 void WybieranieKlasy();
@@ -21,6 +21,7 @@ struct Gracz
     int szczescie;
     int zycie;
     int rany;
+    int mana;
 };
 Gracz gracz;
 bool CzyKoniecGry() {
@@ -69,7 +70,6 @@ void PoziomTrudnosci() {
 void WybieranieRasyCom() {
     cout << "Wybierz rasę! " << endl << endl;
 
-    int k;
     cout << "1. Czlowiek:   Atak=4, Obrona=4, Obrażenia= 4, Moc = 4, Szczęście=4, Życie = 20" << endl;
     cout << "2. Krasnolud:  Atak=5, Obrona=5, Obrażenia= 2, Moc = 3, Szczęście=4, Życie = 25" << endl;
     cout << "3. Elf:        Atak=3, Obrona=2, Obrażenia= 4, Moc = 5, Szczęście=6, Życie = 20" << endl;
@@ -78,7 +78,7 @@ void WybieranieRasyCom() {
     cin >> k;
 }
 void WybieranieRasyMech(){
-    if (k < 5 && k>0)
+    if (k <= 4 && k>=1)
     {
         switch (k) {
         case 1: gracz.atak = 4; gracz.obrona = 4;  gracz.obrazenia = 4; gracz.moc = 4; gracz.szczescie = 4; Rasa = 1; gracz.zycie = 20;  break;
@@ -127,11 +127,14 @@ void WybieranieKlasy() {
     WybieranieKlasyMech();
 }
 
-
+void Mana() {
+    gracz.mana = gracz.moc * 10;
+}
 void TworzeniePostaci() {
     PoziomTrudnosci();
     WybieranieRasy();
     WybieranieKlasy();
+    Mana();
 }
 void Statystyki() {
     cout << endl;
@@ -182,15 +185,15 @@ void WrogNazwa() {
 }
 
 
-void Czar() {
-    if (Mana >= 3 * gracz.moc) {
-        cout << "Czy chcesz rzucic czar? Koszt: " << 3 * gracz.moc << " / " << Mana << " Many ." << endl << "0 NIE 1 TAK" << endl;
+    void Czar() {
+        if (gracz.mana >= 3 * gracz.moc) {
+        cout << "Czy chcesz rzucic czar? Koszt: " << 3 * gracz.moc << " / " << gracz.mana << " Many ." << endl << "0 NIE 1 TAK" << endl;
         cin >> k;
         if (k == 1) {
             int IloscObrazen = 1.5 * gracz.moc;
             cout << "Rzucies czar, zada on: " << IloscObrazen << "obrazen!!!" << endl;
             ZycieWroga -= IloscObrazen;
-            Mana -= 3 * gracz.moc;
+            gracz.mana -= 3 * gracz.moc;
         }
         else if (k == 0) {
             cout << "Nie rzuciles czaru" << endl;
@@ -273,11 +276,11 @@ void Nagroda() {
         gracz.rany -= gracz.szczescie / 2;
     }
     if (
-        Mana < 10 + 9 * gracz.moc - gracz.szczescie) {
-        Mana += gracz.moc + gracz.szczescie;
+        gracz.mana < 10 + 9 * gracz.moc - gracz.szczescie) {
+        gracz.mana += gracz.moc + gracz.szczescie;
     }
     else {
-        Mana = 10 + 10 * gracz.moc;
+        gracz.mana = 10 + 10 * gracz.moc;
     }
     for (int i = T; i > 0; i--) {
         int x = 1 + rand() % 6;
@@ -286,7 +289,7 @@ void Nagroda() {
         case 2: gracz.obrona++; break;
         case 3: gracz.moc++; break;
         case 4: gracz.obrazenia++; break;
-        case 5: gracz.szczescie += 1; break;
+        case 5: gracz.szczescie++; break;
         case 6: gracz.zycie += 3; break;
         }
     }
@@ -324,7 +327,7 @@ int main() {
             cout << "Trodno." << endl;
         }
         cout << endl << endl << endl;
-        Trodnosc += 10;
+        Trodnosc += 20;
     }
 
 
