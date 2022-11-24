@@ -21,6 +21,7 @@ struct Gracz
     int zycie;
     int rany;
     int mana;
+    int manaMax;
     int rasa;
     int klasa;
 };
@@ -39,14 +40,22 @@ bool CzyPokonalesWroga() {
     }
     return false;
 }
+void CzyPodobalaCiSieRunda() {
+    cout << "Czy podobała ci się runda?" << endl << "0. Nie    1. Tak" << endl;
+    cin >> k;
+    if (k == 1) {
+        cout << "To dobrze !!!" << endl;
+    }
+    else {
+        cout << "Szkoda!!!" << endl;
+    }
+}
 
 int JakiCzarRzucasz() {
-    cout << "Jaki czar rzucasz (masz "<<gracz.mana <<" many) " << endl << "0. Nic" << endl << "1. Magiczny Pocisk (30 many)";
+    cout << "Jaki czar rzucasz (masz "<<gracz.mana <<" many) " << endl << "0. Nic" << endl << "1. Magiczny Pocisk (30 many)" << endl;
     cin >>k;
     return k;
 }
-
-
 
 void PoziomTrudnosciMech() {
     if (k >= 1 && k <= 5)
@@ -136,10 +145,11 @@ void WybieranieKlasy() {
 }
 
 void Mana() {
-    gracz.mana = 100;
+    gracz.manaMax = 100;
     if (gracz.klasa == 3) {
-        gracz.mana += 20;
+        gracz.manaMax += 20;
     }
+    gracz.mana = gracz.manaMax;
 }
 void TworzeniePostaci() {
     PoziomTrudnosci();
@@ -193,14 +203,18 @@ void WrogNazwa() {
 
 }
 
-void Czar1() {
-
+void Czar1Mech() {
+    ZycieWroga -= 2 * gracz.moc;
+    
+}
+void Czar1Com() {
+    cout << "Zadajesz " << 2 * gracz.moc << " obrazen." << endl;
 }
 
 int Czar() {
     JakiCzarRzucasz();
     switch (k) {
-    case 1: if (gracz.mana >= 30) { Czar1(); } return 1; break;
+    case 1: if (gracz.mana >= 30) { Czar1Mech(); Czar1Com(); gracz.mana -= 30; } return 1; break;
     }
     return 0;
 }
@@ -231,8 +245,9 @@ void GraczAtakuje() {
     ZycieWroga -= IloscObrarzen(gracz.atak, ObronaWroga);
 }
 void AtakNaPoczatkuTury() {
-    ZycieWroga -= gracz.obrazenia;
-    cout << "Atakujesz Wroga!!! Zadajesz " << gracz.obrazenia << " obrazen" << endl;
+    int X = 1.5 * gracz.obrazenia;
+    ZycieWroga -= X;
+    cout << "Atakujesz Wroga!!! Zadajesz " << X << " obrazen" << endl;
 }
 
 int Walka() {
@@ -257,6 +272,9 @@ int Walka() {
             cout << "pokonales wroga!" << endl;
             return 1;
         }
+
+        CzyPodobalaCiSieRunda();
+
     }
     return 1;
 
@@ -271,12 +289,11 @@ void Nagroda() {
     else {
         gracz.rany -= gracz.szczescie / 2;
     }
-    if (
-        gracz.mana < 10 + 9 * gracz.moc - gracz.szczescie) {
-        gracz.mana += gracz.moc + gracz.szczescie;
+    if (gracz.mana > gracz.manaMax*9/10) {
+        gracz.mana = gracz.manaMax;
     }
     else {
-        gracz.mana = 10 + 10 * gracz.moc;
+        gracz.mana += gracz.manaMax/10;
     }
     for (int i = T; i > 0; i--) {
         int x = 1 + rand() % 6;
