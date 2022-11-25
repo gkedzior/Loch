@@ -7,7 +7,6 @@ using namespace std;
 int Komnata, Trodnosc, loch;
 int ZycieWroga, AtakWroga, ObronaWroga, WrogaRasa, WrogaKlasa;
 float ZycieMnoznik, AtakMnoznik, ObronaMnoznik;
-int Rasa, Klasa;
 int k, T;
 void WybieranieRasy();
 void WybieranieKlasy();
@@ -22,8 +21,12 @@ struct Gracz
     int zycie;
     int rany;
     int mana;
+    int manaMax;
+    int rasa;
+    int klasa;
 };
 Gracz gracz;
+
 bool CzyKoniecGry() {
     if (gracz.zycie - gracz.rany <= 0) {
         cout << "Przegrales :(";
@@ -37,7 +40,22 @@ bool CzyPokonalesWroga() {
     }
     return false;
 }
+void CzyPodobalaCiSieRunda() {
+    cout << "Czy podobała ci się runda?" << endl << "0. Nie    1. Tak" << endl;
+    cin >> k;
+    if (k == 1) {
+        cout << "To dobrze !!!" << endl;
+    }
+    else {
+        cout << "Szkoda!!!" << endl;
+    }
+}
 
+int JakiCzarRzucasz() {
+    cout << "Jaki czar rzucasz (masz "<<gracz.mana <<" many) " << endl << "0. Nic" << endl << "1. Magiczny Pocisk (30 many)" << endl;
+    cin >>k;
+    return k;
+}
 
 void PoziomTrudnosciMech() {
     if (k >= 1 && k <= 5)
@@ -66,14 +84,13 @@ void PoziomTrudnosci() {
     PoziomTrudnosciMech();
 }
 
-
 void WybieranieRasyCom() {
     cout << "Wybierz rasę! " << endl << endl;
 
-    cout << "1. Czlowiek:   Atak=4, Obrona=4, Obrażenia= 4, Moc = 4, Szczęście=4, Życie = 20" << endl;
-    cout << "2. Krasnolud:  Atak=5, Obrona=5, Obrażenia= 2, Moc = 3, Szczęście=4, Życie = 25" << endl;
-    cout << "3. Elf:        Atak=3, Obrona=2, Obrażenia= 4, Moc = 5, Szczęście=6, Życie = 20" << endl;
-    cout << "4. Ork:        Atak=6, Obrona=4, Obrażenia= 5, Moc = 2, Szczęście=3, Życie = 20" << endl;
+    cout << "1. Czlowiek:   Atak=4, Obrona=4, Obrażenia= 4, Moc = 4, Szczęście=4, Zycie = 25" << endl;
+    cout << "2. Krasnolud:  Atak=5, Obrona=5, Obrażenia= 2, Moc = 3, Szczęście=4, Zycie = 30" << endl;
+    cout << "3. Elf:        Atak=3, Obrona=2, Obrażenia= 4, Moc = 5, Szczęście=6, Zycie = 25" << endl;
+    cout << "4. Ork:        Atak=6, Obrona=4, Obrażenia= 5, Moc = 2, Szczęście=3, Zycie = 25" << endl;
     cout << "Wybierz rasę! " << endl;
     cin >> k;
 }
@@ -81,10 +98,10 @@ void WybieranieRasyMech(){
     if (k <= 4 && k>=1)
     {
         switch (k) {
-        case 1: gracz.atak = 4; gracz.obrona = 4;  gracz.obrazenia = 4; gracz.moc = 4; gracz.szczescie = 4; Rasa = 1; gracz.zycie = 20;  break;
-        case 2: gracz.atak = 5; gracz.obrona = 5;  gracz.obrazenia = 2; gracz.moc = 3; gracz.szczescie = 4; Rasa = 2; gracz.zycie = 25;  break;
-        case 3: gracz.atak = 3; gracz.obrona = 2;  gracz.obrazenia = 4; gracz.moc = 5; gracz.szczescie = 6; Rasa = 3; gracz.zycie = 20;  break;
-        case 4: gracz.atak = 6; gracz.obrona = 4;  gracz.obrazenia = 5; gracz.moc = 2; gracz.szczescie = 3; Rasa = 4; gracz.zycie = 30;  break;
+        case 1: gracz.atak = 4; gracz.obrona = 4;  gracz.obrazenia = 4; gracz.moc = 4; gracz.szczescie = 4; gracz.klasa = 1; gracz.zycie = 25;  break;
+        case 2: gracz.atak = 5; gracz.obrona = 5;  gracz.obrazenia = 2; gracz.moc = 3; gracz.szczescie = 4; gracz.klasa = 2; gracz.zycie = 30;  break;
+        case 3: gracz.atak = 3; gracz.obrona = 2;  gracz.obrazenia = 4; gracz.moc = 5; gracz.szczescie = 6; gracz.klasa = 3; gracz.zycie = 25;  break;
+        case 4: gracz.atak = 6; gracz.obrona = 4;  gracz.obrazenia = 5; gracz.moc = 2; gracz.szczescie = 3; gracz.klasa = 4; gracz.zycie = 25;  break;
         }
     }
     else
@@ -101,9 +118,9 @@ void WybieranieKlasyCom() {
     cout << "Wybierz Klase! " << endl << endl;
 
 
-    cout << "1. Wojownik:   Atak +5, Obrona +3, Obrażenia +3, Moc + 0, Szczęście +0, Życie  +10" << endl;
-    cout << "2. Kaplan:     Atak +3, Obrona +3, Obrażenia +3, Moc + 3, Szczęście +5, Życie  +0" << endl;
-    cout << "3. Mag:        Atak +3, Obrona +0, Obrażenia +3, Moc + 5, Szczęście +3, Życie  +5" << endl;
+    cout << "1. Wojownik:   Atak +5, Obrona +3, Obrażenia +3, Moc + 0, Szczęście +0, Życie  +15" << endl;
+    cout << "2. Kaplan:     Atak +0, Obrona +3, Obrażenia +0, Moc + 3, Szczęście +5, Życie  +10" << endl;
+    cout << "3. Mag:        Atak +3, Obrona +0, Obrażenia +3, Moc + 5, Szczęście +3, Życie  +0" << endl;//+20 do many
     cout << "Wybierz Klase! " << endl;
     cin >> k;
 }
@@ -111,9 +128,9 @@ void WybieranieKlasyMech() {
     if (k < 4 && k>0)
     {
         switch (k) {
-        case 1: gracz.atak += 5; gracz.obrona += 5; gracz.obrazenia += 3;  gracz.moc += 0; gracz.szczescie += 0;  gracz.zycie += 10;     Klasa = 1;  break;
-        case 2: gracz.atak += 3; gracz.obrona += 3; gracz.obrazenia += 3;  gracz.moc += 3; gracz.szczescie += 5;  gracz.zycie += 0;      Klasa = 2;  break;
-        case 3: gracz.atak += 3; gracz.obrona += 0; gracz.obrazenia += 3;  gracz.moc += 5; gracz.szczescie += 3;  gracz.zycie += 5;      Klasa = 3;  break;
+        case 1: gracz.atak += 5; gracz.obrona += 3; gracz.obrazenia += 3;  gracz.moc += 0; gracz.szczescie += 0;  gracz.zycie += 15;     gracz.klasa = 1;  break;
+        case 2: gracz.atak += 0; gracz.obrona += 3; gracz.obrazenia += 0;  gracz.moc += 3; gracz.szczescie += 5;  gracz.zycie += 10;     gracz.klasa = 2;  break;
+        case 3: gracz.atak += 3; gracz.obrona += 0; gracz.obrazenia += 3;  gracz.moc += 5; gracz.szczescie += 3;  gracz.zycie += 0;      gracz.klasa = 3;  break;
 
         }
     }
@@ -128,7 +145,11 @@ void WybieranieKlasy() {
 }
 
 void Mana() {
-    gracz.mana = gracz.moc * 10;
+    gracz.manaMax = 100;
+    if (gracz.klasa == 3) {
+        gracz.manaMax += 20;
+    }
+    gracz.mana = gracz.manaMax;
 }
 void TworzeniePostaci() {
     PoziomTrudnosci();
@@ -166,8 +187,6 @@ void KlasaWroga() {
 void Wrog() {
     RasaWroga();
     KlasaWroga();
-    AtakWroga -= 1;
-    ObronaWroga -= 2;
 
 }
 void WrogNazwa() {
@@ -184,28 +203,20 @@ void WrogNazwa() {
 
 }
 
+void Czar1Mech() {
+    ZycieWroga -= 2 * gracz.moc;
+    
+}
+void Czar1Com() {
+    cout << "Zadajesz " << 2 * gracz.moc << " obrazen." << endl;
+}
 
-    void Czar() {
-        if (gracz.mana >= 3 * gracz.moc) {
-        cout << "Czy chcesz rzucic czar? Koszt: " << 3 * gracz.moc << " / " << gracz.mana << " Many ." << endl << "0 NIE 1 TAK" << endl;
-        cin >> k;
-        if (k == 1) {
-            int IloscObrazen = 1.5 * gracz.moc;
-            cout << "Rzucies czar, zada on: " << IloscObrazen << "obrazen!!!" << endl;
-            ZycieWroga -= IloscObrazen;
-            gracz.mana -= 3 * gracz.moc;
-        }
-        else if (k == 0) {
-            cout << "Nie rzuciles czaru" << endl;
-        }
-        else {
-            cout << "!!!bond!!! Nie mozesz rzucic czaru!!!!" << endl;
-        }
-
+int Czar() {
+    JakiCzarRzucasz();
+    switch (k) {
+    case 1: if (gracz.mana >= 30) { Czar1Mech(); Czar1Com(); gracz.mana -= 30; } return 1; break;
     }
-    else {
-        cout << "Nie mozesz rzucic czaru." << endl;
-    }
+    return 0;
 }
 
 void PoziomTrudnosciRundy() {
@@ -214,31 +225,31 @@ void PoziomTrudnosciRundy() {
     T = T / 50;
 }
 
-
 int IloscObrarzen(int Atak2, int Obrona2) {
-    int X = Atak2 - Obrona2 + 6;
-    X = X / 2;
-    if (X > 0) {
-        return X;
+    int X = 1.5 * Atak2 - Obrona2 + 5;
+    if (X <= 0) {
+        return 2;//zmienić na skalowalne
     }
-    return 1;
+    else if (X < 6) {
+        return 3;//zmienić na skalowalne
+    }
+    return 1 + X / 2;
 }
+
 void WrogAtakuje() {
     cout << "Wrog atakuje cie. Otrzymujesz " << IloscObrarzen(AtakWroga, gracz.obrona) << "ran" << endl;
     gracz.rany += IloscObrarzen(AtakWroga, gracz.obrona);
-
 }
 void GraczAtakuje() {
     cout << "Atakujesz wroga. Zadajesz " << IloscObrarzen(gracz.atak, ObronaWroga) << "ran" << endl;
     ZycieWroga -= IloscObrarzen(gracz.atak, ObronaWroga);
-
-
-
 }
 void AtakNaPoczatkuTury() {
-    ZycieWroga -= gracz.obrazenia;
-    cout << "Atakujesz Wroga!!! Zadajesz " << gracz.obrazenia << " obrazen" << endl;
+    int X = 1.5 * gracz.obrazenia;
+    ZycieWroga -= X;
+    cout << "Atakujesz Wroga!!! Zadajesz " << X << " obrazen" << endl;
 }
+
 int Walka() {
     AtakNaPoczatkuTury();
     if (CzyPokonalesWroga()) {
@@ -261,6 +272,9 @@ int Walka() {
             cout << "pokonales wroga!" << endl;
             return 1;
         }
+
+        CzyPodobalaCiSieRunda();
+
     }
     return 1;
 
@@ -275,12 +289,11 @@ void Nagroda() {
     else {
         gracz.rany -= gracz.szczescie / 2;
     }
-    if (
-        gracz.mana < 10 + 9 * gracz.moc - gracz.szczescie) {
-        gracz.mana += gracz.moc + gracz.szczescie;
+    if (gracz.mana > gracz.manaMax*9/10) {
+        gracz.mana = gracz.manaMax;
     }
     else {
-        gracz.mana = 10 + 10 * gracz.moc;
+        gracz.mana += gracz.manaMax/10;
     }
     for (int i = T; i > 0; i--) {
         int x = 1 + rand() % 6;
